@@ -1,0 +1,27 @@
+{
+  "extends": "./tsconfig.path.json",
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "NodeNext",
+    "noImplicitAny": true,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "sourceMap": true,
+    "declaration": true,
+    "declarationDir": "./lib/@types",
+    "moduleResolution": "node",
+    "outDir": "./lib",
+    "allowJs": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "baseUrl": "./"
+  },
+  "ts-node": {
+    // Do not forget to `npm i -D tsconfig-paths`
+    "require": ["tsconfig-paths/register"],
+    "transpileOnly": true,
+    "files": true
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
+}
