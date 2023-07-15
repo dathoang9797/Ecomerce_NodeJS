@@ -8,7 +8,7 @@ import hpp from 'hpp';
 import cookieParser from 'cookie-parser';
 
 import { ErrorController } from '@Controllers/ErrorController';
-import { rootRouter } from '@Routers/RootRouter';
+import { rootRouter } from '@Routers';
 import { MessageLog } from '@Utils/MessageLog';
 
 const { errorRequestManyTime } = MessageLog;
@@ -46,7 +46,7 @@ app.use(hpp({ whitelist: [] }));
 
 app.use('/api/v1', rootRouter);
 app.all('*', (req, res, next) => {
-  res.status(404).json('Error 404');
+  res.status(404).json('Error 4044');
 });
 app.use(ErrorController);
 export default app;
