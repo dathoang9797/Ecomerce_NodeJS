@@ -1,19 +1,18 @@
 {
-  "name": "dathoang29101997",
-  "version": "1.0.19",
+  "name": "dathoang29",
+  "version": "0.0.3",
   "description": "",
   "main": "./lib/index.js",
-  "types": "./lib/@types/index.d.ts",
+  "types": "./lib/index.d.ts",
   "files": [
-    "src",
     "lib"
   ],
   "scripts": {
-    "dev": "npm run && webpack --watch",
-    "dev:clean": "rm -rf node_modules/ && rm -rf package-lock.json && npm install  && npm run && webpack --watch",
-    "build:clean": "rm -rf node_modules/ && rm -rf package-lock.json && npm install && npm run && webpack --mode production",
-    "build": "npm run && webpack --mode production",
-    "start": "npm run build && node index.js",
+    "dev": "rm -rf lib && npm run && webpack --watch",
+    "dev:clean": "rm -rf lib && rm -rf node_modules/ && rm -rf package-lock.json && npm install  && npm run && webpack --watch",
+    "build:clean": "rm -rf lib && rm -rf node_modules/ && rm -rf package-lock.json && npm install && npm run && webpack --mode production",
+    "build": "rm -rf lib && npm run && webpack --mode production",
+    "start": "rm -rf lib && npm run build && node index.js",
     "debug": "webpack && node --inspect-brk lib/index.js"
   },
   "dependencies": {

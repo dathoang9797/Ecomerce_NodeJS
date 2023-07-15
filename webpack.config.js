@@ -14,7 +14,7 @@ module.exports = {
   externalsPresets: { node: true },
   externals: [nodeExternals()],
   mode: prod ? 'production' : 'development',
-  devtool: prod ? null : 'eval-source-map',
+  devtool: prod ? "source-map" : 'eval-source-map',
   output: {
     path: path.resolve(__dirname, 'lib'),
     filename: 'index.js',
@@ -32,7 +32,8 @@ module.exports = {
                 afterDeclarations: true
               })]
             }
-          }
+          },
+          configFile: prod ? 'tsconfig.json' : 'tsconfig.dev.json'
         }
       },
     ],
