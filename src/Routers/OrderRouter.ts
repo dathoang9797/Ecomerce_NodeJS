@@ -1,17 +1,18 @@
-import { Request, Response, NextFunction } from 'express';
-import { catchError, AppErrorHandling } from '@Utils';
+import express, { Response, Request, NextFunction } from 'express';
+import { AppErrorHandling } from '@Utils/AppErrorHanding';
+import { catchError, } from '@Utils';
 import { ProductModel } from '@Models/ProductModel';
-import { IProduct } from '@Core/Models';
 
+export const OrderRouter = express.Router();
 
-export const getAllProducts = catchError(async (req: Request, res: Response, next: NextFunction) => {
+OrderRouter.get('/', catchError(async (req: Request, res: Response, next: NextFunction) => {
     const productList = await ProductModel.find();
     if (!productList)
         return next(new AppErrorHandling('Not Found ProductList', 500));
     res.send(productList);
-})
+}))
 
-export const createProduct = catchError(async (req: Request<{}, {}, IProduct>, res: Response, next: NextFunction) => {
+OrderRouter.post('/', catchError(async (req: Request<{}, {}, any>, res: Response, next: NextFunction) => {
     const product = new ProductModel({
         name: req.body.name,
         image: req.body.image,
@@ -23,4 +24,4 @@ export const createProduct = catchError(async (req: Request<{}, {}, IProduct>, r
 
     await product.save();
     return res.status(200).json({ status: 'success', data: product });
-})
+}))

@@ -6,9 +6,13 @@ import mongoSanitize from 'express-mongo-sanitize';
 import xss from 'xss-clean';
 import hpp from 'hpp';
 import cookieParser from 'cookie-parser';
+import cors from 'cors';
 
 import { ErrorController } from '@Controllers/ErrorController';
-import { rootRouter } from '@Routers';
+import { CategoryRouter } from '@Routers/CategoryRouter';
+import { OrderRouter } from '@Routers/OrderRouter';
+import { ProductRouter } from '@Routers/ProductRouter';
+import { UserRouter } from '@Routers/UserRouter';
 import { MessageLog } from '@Utils/MessageLog';
 
 const { errorRequestManyTime } = MessageLog;
@@ -18,6 +22,10 @@ const limiter = rateLimit({
   windowMs: 60 * 60 * 1000,
   message: errorRequestManyTime
 });
+
+//Allow CORS
+app.use(cors());
+app.options('*', cors());
 
 //Set Security HTTP headers
 app.use(helmet());
@@ -44,9 +52,13 @@ app.use(xss());
 //Prevent parameter pollution
 app.use(hpp({ whitelist: [] }));
 
-app.use('/api/v1', rootRouter);
-app.all('*', (req, res, next) => {
-  res.status(404).json('Error 4044');
-});
+app.use(`/api/v1/categories`, CategoryRouter);
+app.use(`/api/v1/products`, ProductRouter);
+app.use(`/api/v1/users`, UserRouter);
+app.use(`/api/v1/orders`, OrderRouter);
 app.use(ErrorController);
+
+app.all('*', (req, res, next) => {
+  res.status(404).json('Error 404');
+});
 export default app;
