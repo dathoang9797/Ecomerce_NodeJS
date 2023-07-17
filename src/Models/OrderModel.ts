@@ -9,4 +9,12 @@ const OrderSchema = new mongoose.Schema<any>({
     }
   });
   
+  // OrderSchema.virtual('id').get(function () {
+  //   return this._id.toHexString();
+  // })
+  
+  // OrderSchema.set('toJSON', {
+  //   virtuals: true
+  // })
+
   export const OrdertModel = mongoose.model('Order', OrderSchema);

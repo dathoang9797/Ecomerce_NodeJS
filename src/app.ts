@@ -14,6 +14,7 @@ import { OrderRouter } from '@Routers/OrderRouter';
 import { ProductRouter } from '@Routers/ProductRouter';
 import { UserRouter } from '@Routers/UserRouter';
 import { MessageLog } from '@Utils/MessageLog';
+import { authJwt } from '@Utils/Token';
 
 const { errorRequestManyTime } = MessageLog;
 const app = express();
@@ -38,6 +39,7 @@ if (process.env.NODE_ENV === 'production') {
   app.use('/api', limiter);
 }
 
+app.use(authJwt());
 app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 app.use('/static', express.static('public'));

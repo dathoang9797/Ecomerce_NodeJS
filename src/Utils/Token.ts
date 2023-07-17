@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import pick from 'lodash/pick';
+import { expressjwt } from "express-jwt";
 import { Response, CookieOptions } from 'express';
 // import { IUser } from '@Models/UserModel';
 
@@ -25,3 +26,18 @@ export const createSendToken = (data: any, statusCode: number, res: Response
   data.user_password = undefined;
   return res.status(statusCode).json({ status: 'Success', token, data });
 };
+
+export const authJwt = () => {
+  const secret = process.env.SECRET;
+  return expressjwt({
+    secret: process.env.SECRET,
+    algorithms: ["HS256"],
+  }).unless({
+    path: [
+      { url: /\/api\/v1\/products(.*)/, methods: ['GET', 'OPTIONS'] },
+      { url: /\/api\/v1\/categories(.*)/, methods: ['GET', 'OPTIONS'] },
+      '/api/v1/users/login',
+      '/api/v1/users/register',
+    ]
+  });
+} 
