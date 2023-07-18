@@ -1,8 +1,7 @@
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 import pick from 'lodash/pick';
-import { expressjwt } from "express-jwt";
+import { expressjwt, IsRevoked } from "express-jwt";
 import { Response, CookieOptions } from 'express';
-// import { IUser } from '@Models/UserModel';
 
 export const signToken = (user: Pick<any, 'user_name' | 'type_login' | '_id'>) => {
   return jwt.sign(user, process.env.JWT_SECRET, {
@@ -27,11 +26,17 @@ export const createSendToken = (data: any, statusCode: number, res: Response
   return res.status(statusCode).json({ status: 'Success', token, data });
 };
 
+const isRevoked: IsRevoked = (req, token) => {
+  if (typeof token.payload !== 'string' && token.payload.isAdmin)
+    return false
+  return true;
+}
+
 export const authJwt = () => {
-  const secret = process.env.SECRET;
   return expressjwt({
     secret: process.env.SECRET,
     algorithms: ["HS256"],
+    isRevoked
   }).unless({
     path: [
       { url: /\/api\/v1\/products(.*)/, methods: ['GET', 'OPTIONS'] },

@@ -11,7 +11,6 @@ CategoryRouter.get('/', catchError(async (req: Request, res: Response, next: Nex
     res.status(200).send(listCategory);
 }))
 
-
 CategoryRouter.get('/:id', catchError(async (req: Request<{ id: string }, {}, {}>, res: Response, next: NextFunction) => {
     const category = await CategoryModel.findById(req.params.id);
     if (!category)
@@ -33,7 +32,6 @@ CategoryRouter.post('/', catchError(async (req: Request<{}, {}, ICategory>, res:
     await category.save();
     return res.status(200).json({ status: 'success', data: category });
 }))
-
 
 CategoryRouter.put('/:id', catchError(async (req: Request<{ id: string }, {}, ICategory>, res: Response, next: NextFunction) => {
     const categoryUpdate = await CategoryModel.findByIdAndUpdate(req.params.id, {

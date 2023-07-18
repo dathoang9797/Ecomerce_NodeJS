@@ -70,7 +70,7 @@ const ProductSchema = new mongoose.Schema<IProduct>({
   },
   dateCreated: {
     type: Date,
-    default: Date.now()
+    default: Date.now
   }
 });
 

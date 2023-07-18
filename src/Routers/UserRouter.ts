@@ -14,6 +14,14 @@ UserRouter.get('/', catchError(async (req: Request, res: Response, next: NextFun
     res.status(200).send(userList);
 }))
 
+UserRouter.get('/counts', catchError(async (req: Request<{ id: string }, {}, IUser>, res: Response, next: NextFunction) => {
+    const userCount = await UserModel.countDocuments();
+    console.log({ userCount })
+    if (!userCount)
+        return next(new AppErrorHandling('Not Found User Count', 500));
+    res.status(200).send({ userCount });
+}))
+
 UserRouter.get('/:id', catchError(async (req: Request<{ id: string }, {}, IUser>, res: Response, next: NextFunction) => {
     const userList = await UserModel.findById(req.params.id).select('-passwordHash');
     if (!userList)
@@ -21,7 +29,8 @@ UserRouter.get('/:id', catchError(async (req: Request<{ id: string }, {}, IUser>
     res.status(200).send(userList);
 }))
 
-UserRouter.post('/', catchError(async (req: Request<{}, {}, IUser>, res: Response, next: NextFunction) => {
+
+UserRouter.post('/register', catchError(async (req: Request<{}, {}, IUser>, res: Response, next: NextFunction) => {
     const {
         name, email, apartment, city, country, isAdmin,
         passwordHash, phone, street, zip
@@ -47,12 +56,21 @@ UserRouter.post('/login', catchError(async (req: Request<{}, {}, IUser>, res: Re
         return next(new AppErrorHandling('The User not found', 400));
 
     if (user && passwordHash && bcrypt.compareSync(passwordHash, user.passwordHash)) {
+        console.log(process.env.SECRET, { id, isAdmin })
         const token = jwt.sign({
-            userID: id,
-            isAdmin
+            userId: user.id,
+            isAdmin: user.isAdmin
         }, process.env.SECRET, { expiresIn: '1d' })
         return res.status(200).send({ user: email, token });
     } else {
         return res.status(200).send('Password is wrong');
     }
+}))
+
+UserRouter.delete('/:id', catchError(async (req: Request<{ id: string }, {}, IUser>, res: Response, next: NextFunction) => {
+    const user = await UserModel.findByIdAndRemove(req.params.id);
+    if (!user)
+        return next(new AppErrorHandling('User not found', 500));
+
+    return res.status(200).json({ status: 'success', message: 'The user is deleted!' });
 }))

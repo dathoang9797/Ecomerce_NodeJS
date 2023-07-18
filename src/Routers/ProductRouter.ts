@@ -55,7 +55,7 @@ ProductRouter.post('/', catchError(async (req: Request<{}, {}, IProduct>, res: R
     if (!category)
         return next(new AppErrorHandling('Invalid Category', 400));
 
-    let product = new ProductModel({
+    const product = new ProductModel({
         name: req.body.name,
         description: req.body.description,
         richDescription: req.body.richDescription,
@@ -69,7 +69,7 @@ ProductRouter.post('/', catchError(async (req: Request<{}, {}, IProduct>, res: R
         isFeatured: req.body.isFeatured,
     })
 
-    product = await product.save();
+    await product.save();
     if (!product)
         return next(new AppErrorHandling('The prodcut cannot be created', 500));
 
