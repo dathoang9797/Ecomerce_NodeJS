@@ -4,7 +4,7 @@ import { IUser } from './UserModel';
 
 export interface IOrder {
   id: string,
-  orderItems: IOrderItem[],
+  orderItems: mongoose.Schema.Types.ObjectId[],
   shippingAddress1: string,
   shippingAddress2: string,
   city: string,
@@ -18,7 +18,6 @@ export interface IOrder {
 }
 
 const OrderSchema = new mongoose.Schema<IOrder>({
-
   shippingAddress1: {
     type: String,
     required: true

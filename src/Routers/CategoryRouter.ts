@@ -44,10 +44,9 @@ CategoryRouter.put('/:id', catchError(async (req: Request<{ id: string }, {}, IC
         return next(new AppErrorHandling('The category cannot be updated', 500));
 
     return res.status(200).json({ status: 'success', data: categoryUpdate });
-})
-)
+}))
 
-CategoryRouter.delete('/:id',  catchError(async (req: Request<{ id: string }, {}, ICategory>, res: Response, next: NextFunction) => {
+CategoryRouter.delete('/:id', catchError(async (req: Request<{ id: string }, {}, ICategory>, res: Response, next: NextFunction) => {
     const category = await CategoryModel.findByIdAndRemove(req.params.id);
     if (!category)
         return next(new AppErrorHandling('Category not found', 500));
