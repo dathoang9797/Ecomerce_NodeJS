@@ -4,6 +4,10 @@
   "description": "",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
+  "engines" : { 
+    "npm" : ">=8.0.0 <9.0.0",
+    "node" : ">=17.0.0 <20.0.0"
+  },
   "files": [
     "lib"
   ],
