@@ -12,7 +12,7 @@
     "dev:clean": "rm -rf lib && rm -rf node_modules/ && rm -rf package-lock.json && npm install  && npm run && webpack --watch",
     "build:clean": "rm -rf lib && rm -rf node_modules/ && rm -rf package-lock.json && npm install && npm run && webpack --mode production",
     "build": "rm -rf lib && npm run && webpack --mode production",
-    "start": "rm -rf lib && npm run build && node index.js",
+    "start": "rm -rf lib && npm run build && node lib/index.js",
     "debug": "webpack && node --inspect-brk lib/index.js"
   },
   "dependencies": {
