@@ -32,6 +32,20 @@ OrderRouter.get('/counts', catchError(async (req: Request<{ id: string }, {}, IP
     res.status(200).send({ orderCount });
 }))
 
+OrderRouter.get('/user_order/:userId', catchError(async (req: Request<{ userId: string }, {}, IProduct>, res: Response, next: NextFunction) => {
+    let userOrderList = await OrderModel.find({ user: req.params.userId }).populate({
+        path: 'orderItems', populate: {
+            path: 'product', populate: 'category'
+        }
+    }).sort({ 'dateOrdered': -1 });
+
+    if (!userOrderList)
+        return next(new AppErrorHandling('Not Found order count', 500));
+
+    const totalCount = userOrderList?.length ?? 0;
+    res.status(200).send({ userOrderList, totalCount });
+}))
+
 OrderRouter.get('/:id', catchError(async (req: Request<{ id: string }, {}, IOrder>, res: Response, next: NextFunction) => {
     let listOrder = await OrderModel.findById(req.params.id);
     listOrder = await listOrder.populate('user', 'name');
